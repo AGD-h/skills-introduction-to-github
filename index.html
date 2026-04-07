@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>个人摄影作品集</title>
+  <style>
+    /* ===== 基础重置 ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0e0e0e;
+      --surface: #1a1a1a;
+      --surface2: #252525;
+      --accent: #e8c97a;
+      --accent-hover: #f5d98e;
+      --text: #f0ede8;
+      --text-muted: #9a9590;
+      --border: #2e2e2e;
+      --radius: 8px;
+      --nav-h: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ===== 导航栏 ===== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-h);
+      background: rgba(14, 14, 14, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+    }
+
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* 汉堡菜单（移动端） */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      transition: all 0.3s;
+      transform-origin: center;
+    }
+
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ===== 首页 Hero ===== */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: calc(var(--nav-h) + 2rem) 5% 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(232,201,122,0.08) 0%, transparent 70%),
+        linear-gradient(180deg, #0e0e0e 0%, #141414 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(232,201,122,0.12);
+      border: 1px solid rgba(232,201,122,0.3);
+      color: var(--accent);
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #111;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(232,201,122,0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* 滚动箭头 */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .scroll-hint svg { width: 18px; height: 18px; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ===== 区块通用 ===== */
+    section {
+      padding: 80px 5%;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ===== 相册展示区 ===== */
+    #gallery {
+      background: var(--surface);
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-btn {
+      padding: 7px 20px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #111;
+      font-weight: 600;
+    }
+
+    /* 照片网格 */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .photo-card {
+      background: var(--surface2);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .photo-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+
+    .photo-card:hover .photo-thumb {
+      transform: scale(1.05);
+    }
+
+    .photo-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem;
+    }
+
+    .photo-card:hover .photo-card-overlay {
+      opacity: 1;
+    }
+
+    .photo-card-overlay .overlay-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      color: #fff;
+    }
+
+    .photo-info {
+      padding: 0.85rem 1rem;
+    }
+
+    .photo-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .photo-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .photo-category {
+      background: rgba(232,201,122,0.12);
+      color: var(--accent);
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+    }
+
+    /* 隐藏的照片卡片（筛选用） */
+    .photo-card.hidden {
+      display: none;
+    }
+
+    /* ===== 照片详情弹窗 ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-width: 860px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      transform: scale(0.94) translateY(16px);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.open .modal-box {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-image-wrap {
+      position: relative;
+      background: var(--surface2);
+      border-radius: 12px 0 0 12px;
+      overflow: hidden;
+      min-height: 300px;
+    }
+
+    .modal-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-body {
+      padding: 2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.6);
+      border: none;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover { background: rgba(0,0,0,0.9); }
+
+    .modal-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .modal-category-badge {
+      display: inline-block;
+      background: rgba(232,201,122,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(232,201,122,0.25);
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+    }
+
+    .modal-desc {
+      color: var(--text-muted);
+      line-height: 1.75;
+      font-size: 0.93rem;
+    }
+
+    .exif-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem 1rem;
+    }
+
+    .exif-item {
+      background: var(--surface2);
+      border-radius: 6px;
+      padding: 0.6rem 0.8rem;
+    }
+
+    .exif-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .exif-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .modal-nav {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: auto;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .modal-nav-btn {
+      flex: 1;
+      padding: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .modal-nav-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .modal-nav-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    /* ===== 关于我 ===== */
+    #about {
+      background: var(--bg);
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .about-avatar {
+      aspect-ratio: 1;
+      background: var(--surface2);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-avatar svg {
+      width: 60%;
+      height: 60%;
+      color: var(--text-muted);
+      opacity: 0.4;
+    }
+
+    .about-text h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .about-text .sub {
+      color: var(--accent);
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p {
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .stat {
+      text-align: center;
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 1rem 0.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .stat-num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* ===== 页脚 ===== */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      :root { --nav-h: 56px; }
+
+      .nav-links {
+        position: fixed;
+        top: var(--nav-h);
+        left: 0;
+        right: 0;
+        background: rgba(14,14,14,0.97);
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-links.open {
+        max-height: 300px;
+      }
+
+      .nav-links li a {
+        display: block;
+        padding: 1rem 5%;
+        border-bottom: 1px solid var(--border);
+        border-bottom-color: var(--border) !important;
+      }
+
+      .nav-toggle { display: flex; }
+
+      section { padding: 60px 5%; }
+
+      .photo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 0.85rem;
+      }
+
+      .modal-box {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-image-wrap {
+        border-radius: 12px 12px 0 0;
+        min-height: 220px;
+        max-height: 280px;
+      }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .about-avatar {
+        max-width: 200px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .photo-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+      }
+
+      .exif-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== 导航栏 ===== -->
+  <nav id="main-nav">
+    <a href="#home" class="nav-logo">📷 摄影作品集</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="菜单" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" class="active">首页</a></li>
+      <li><a href="#gallery">相册</a></li>
+      <li><a href="#about">关于我</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== 首页 ===== -->
+  <section id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <span class="hero-badge">✦ 个人摄影作品集</span>
+      <h1 class="hero-title">用镜头记录<br/>每一个精彩瞬间</h1>
+      <p class="hero-sub">
+        热爱风光、人文与自然摄影。走过山川湖海，<br class="hide-sm"/>
+        记录光影交错间最真实的情感与故事。
+      </p>
+      <div class="hero-actions">
+        <a href="#gallery" class="btn btn-primary">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          浏览作品
+        </a>
+        <a href="#about" class="btn btn-outline">了解更多</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>向下滚动</span>
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </section>
+
+  <!-- ===== 相册展示区 ===== -->
+  <section id="gallery">
+    <div class="section-header">
+      <p class="section-label">GALLERY</p>
+      <h2 class="section-title">摄影作品</h2>
+      <p class="section-desc">精选自然风光、城市人文与微距特写，每一张都是一段旅程的印记。</p>
+    </div>
+
+    <!-- 分类筛选 -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">全部</button>
+      <button class="filter-btn" data-filter="landscape">风光</button>
+      <button class="filter-btn" data-filter="city">城市</button>
+      <button class="filter-btn" data-filter="nature">自然</button>
+      <button class="filter-btn" data-filter="portrait">人文</button>
+    </div>
+
+    <!-- 照片网格 -->
+    <div class="photo-grid" id="photo-grid">
+
+      <div class="photo-card" data-id="1" data-category="landscape"
+           data-title="晨曦山岭" data-date="2024-03-15"
+           data-camera="Sony A7 IV" data-lens="24-70mm f/2.8"
+           data-aperture="f/8" data-shutter="1/250s" data-iso="ISO 100"
+           data-desc="清晨第一缕阳光穿过云层，将连绵山脊镀上一层温暖的金色。寂静的山谷中薄雾未散，远处峰峦若隐若现。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"
+               alt="晨曦山岭" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">晨曦山岭</div>
+          <div class="photo-meta">
+            <span>2024-03-15</span>
+            <span class="photo-category">风光</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card" data-id="2" data-category="city"
+           data-title="霓虹都市" data-date="2024-01-22"
+           data-camera="Fujifilm X-T5" data-lens="16mm f/1.4"
+           data-aperture="f/2" data-shutter="1/30s" data-iso="ISO 3200"
+           data-desc="雨夜的城市，地面倒映着五彩霓虹。行人打伞匆匆而过，快门定格了那一刹那的光与影交织。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80"
+               alt="霓虹都市" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">霓虹都市</div>
+          <div class="photo-meta">
+            <span>2024-01-22</span>
+            <span class="photo-category">城市</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card" data-id="3" data-category="nature"
+           data-title="林间光束" data-date="2024-04-08"
+           data-camera="Canon EOS R5" data-lens="50mm f/1.2"
+           data-aperture="f/2.8" data-shutter="1/500s" data-iso="ISO 400"
+           data-desc="密林深处，阳光透过树冠缝隙倾泻而下，形成数道壮观的光柱。空气中漂浮的微尘在光线中清晰可见，如梦似幻。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80"
+               alt="林间光束" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">林间光束</div>
+          <div class="photo-meta">
+            <span>2024-04-08</span>
+            <span class="photo-category">自然</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card" data-id="4" data-category="portrait"
+           data-title="街头剪影" data-date="2023-11-30"
+           data-camera="Leica M11" data-lens="35mm f/2"
+           data-aperture="f/5.6" data-shutter="1/1000s" data-iso="ISO 200"
+           data-desc="傍晚的老街，夕阳把行人的身影拉得修长。一位老人停驻街角，望着远方，岁月在他的轮廓间静静流淌。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&q=80"
+               alt="街头剪影" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">街头剪影</div>
+          <div class="photo-meta">
+            <span>2023-11-30</span>
+            <span class="photo-category">人文</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card" data-id="5" data-category="landscape"
+           data-title="镜湖倒影" data-date="2024-05-20"
+           data-camera="Sony A7 IV" data-lens="16-35mm f/4"
+           data-aperture="f/11" data-shutter="1/4s" data-iso="ISO 50"
+           data-desc="清晨无风，湖面如镜。对岸山峰与蓝天白云完整地倒映在水面，分不清哪个是真实，哪个是虚幻。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1439853949212-36689e9b1a7e?w=600&q=80"
+               alt="镜湖倒影" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">镜湖倒影</div>
+          <div class="photo-meta">
+            <span>2024-05-20</span>
+            <span class="photo-category">风光</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card" data-id="6" data-category="city"
+           data-title="空中俯瞰" data-date="2024-02-14"
+           data-camera="DJI Mavic 3 Pro" data-lens="内置镜头"
+           data-aperture="f/2.8" data-shutter="1/800s" data-iso="ISO 100"
+           data-desc="从数百米高空俯瞰，城市的肌理如同精密的电路板。道路、建筑、绿地在光线下呈现出震撼人心的几何之美。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=600&q=80"
+               alt="空中俯瞰" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">空中俯瞰</div>
+          <div class="photo-meta">
+            <span>2024-02-14</span>
+            <span class="photo-category">城市</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card" data-id="7" data-category="nature"
+           data-title="浪涌礁石" data-date="2024-06-03"
+           data-camera="Canon EOS R5" data-lens="70-200mm f/2.8"
+           data-aperture="f/8" data-shutter="1/1000s" data-iso="ISO 200"
+           data-desc="海浪拍打礁石的瞬间，白色的浪花高高腾起。长时间追拍终于捕捉到这最完美的爆发一刻，力量与美的结合。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80"
+               alt="浪涌礁石" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">浪涌礁石</div>
+          <div class="photo-meta">
+            <span>2024-06-03</span>
+            <span class="photo-category">自然</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card" data-id="8" data-category="portrait"
+           data-title="市集百态" data-date="2024-07-11"
+           data-camera="Fujifilm X-T5" data-lens="23mm f/2"
+           data-aperture="f/4" data-shutter="1/250s" data-iso="ISO 800"
+           data-desc="喧闹的早市中，卖菜的大娘、讲价的顾客、穿梭的孩子，每一张脸都写满了最真实的生活故事。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600&q=80"
+               alt="市集百态" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">市集百态</div>
+          <div class="photo-meta">
+            <span>2024-07-11</span>
+            <span class="photo-category">人文</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="photo-card" data-id="9" data-category="landscape"
+           data-title="银河之夜" data-date="2024-08-25"
+           data-camera="Sony A7 IV" data-lens="14mm f/1.8"
+           data-aperture="f/1.8" data-shutter="20s" data-iso="ISO 6400"
+           data-desc="远离城市灯光的旷野，抬头便是壮阔银河。数以亿计的星辰铺满夜空，渺小的我站在其下，感受着宇宙的无垠与宏大。">
+        <div style="overflow:hidden;">
+          <img class="photo-thumb"
+               src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80"
+               alt="银河之夜" loading="lazy" />
+        </div>
+        <div class="photo-card-overlay">
+          <div class="overlay-icon">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+        </div>
+        <div class="photo-info">
+          <div class="photo-title">银河之夜</div>
+          <div class="photo-meta">
+            <span>2024-08-25</span>
+            <span class="photo-category">风光</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 关于我 ===== -->
+  <section id="about">
+    <div class="about-inner">
+      <div class="about-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+      </div>
+      <div class="about-text">
+        <h2>关于摄影师</h2>
+        <div class="sub">PHOTOGRAPHER · TRAVELER</div>
+        <p>
+          你好！我是一位热爱自然与人文的摄影爱好者。
+          摄影于我不只是记录，更是一种与世界对话的方式——
+          透过镜头，我寻找那些平凡日常中被忽视的美好。
+        </p>
+        <p>
+          多年来走遍大江南北，从高原雪山到海边渔村，
+          从喧嚣都市到寂静山林，相机是我最忠实的旅伴。
+          希望这些作品能带给你片刻宁静与感动。
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-num">500+</span>
+            <span class="stat-lbl">摄影作品</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">30+</span>
+            <span class="stat-lbl">到访城市</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">6年</span>
+            <span class="stat-lbl">摄影经验</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 页脚 ===== */
+  <footer>
+    <span>© 2024 个人摄影作品集 · 用镜头记录美好</span>
+    <div class="footer-links">
+      <a href="#home">首页</a>
+      <a href="#gallery">相册</a>
+      <a href="#about">关于我</a>
+    </div>
+  </footer>
+
+  <!-- ===== 照片详情弹窗 ===== -->
+  <div class="modal-overlay" id="photo-modal" role="dialog" aria-modal="true" aria-labelledby="modal-photo-title">
+    <div class="modal-box">
+      <div class="modal-image-wrap">
+        <button class="modal-close" id="modal-close" aria-label="关闭">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <img id="modal-img" src="" alt="" />
+      </div>
+      <div class="modal-body">
+        <div>
+          <span class="modal-category-badge" id="modal-category"></span>
+        </div>
+        <h2 class="modal-title" id="modal-photo-title"></h2>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="exif-grid" id="modal-exif">
+          <div class="exif-item">
+            <div class="exif-label">相机</div>
+            <div class="exif-value" id="modal-camera"></div>
+          </div>
+          <div class="exif-item">
+            <div class="exif-label">镜头</div>
+            <div class="exif-value" id="modal-lens"></div>
+          </div>
+          <div class="exif-item">
+            <div class="exif-label">光圈</div>
+            <div class="exif-value" id="modal-aperture"></div>
+          </div>
+          <div class="exif-item">
+            <div class="exif-label">快门</div>
+            <div class="exif-value" id="modal-shutter"></div>
+          </div>
+          <div class="exif-item">
+            <div class="exif-label">ISO</div>
+            <div class="exif-value" id="modal-iso"></div>
+          </div>
+          <div class="exif-item">
+            <div class="exif-label">拍摄日期</div>
+            <div class="exif-value" id="modal-date"></div>
+          </div>
+        </div>
+        <div class="modal-nav">
+          <button class="modal-nav-btn" id="modal-prev">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            上一张
+          </button>
+          <button class="modal-nav-btn" id="modal-next">
+            下一张
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== 导航栏交互 =====
+    const navToggle = document.getElementById('nav-toggle');
+    const navLinks = document.getElementById('nav-links');
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      navToggle.classList.toggle('open', isOpen);
+      navToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    // 点击导航链接后关闭菜单（移动端）
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // 滚动时高亮导航链接
+    const sections = document.querySelectorAll('section[id]');
+    const navAnchors = navLinks.querySelectorAll('a');
+
+    function updateActiveNav() {
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 80;
+        if (window.scrollY >= top) current = sec.id;
+      });
+      navAnchors.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
+
+    // ===== 分类筛选 =====
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const photoCards = document.querySelectorAll('.photo-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        photoCards.forEach(card => {
+          const match = filter === 'all' || card.dataset.category === filter;
+          card.classList.toggle('hidden', !match);
+        });
+      });
+    });
+
+    // ===== 照片详情弹窗 =====
+    const modal = document.getElementById('photo-modal');
+    const modalClose = document.getElementById('modal-close');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-photo-title');
+    const modalCategory = document.getElementById('modal-category');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalCamera = document.getElementById('modal-camera');
+    const modalLens = document.getElementById('modal-lens');
+    const modalAperture = document.getElementById('modal-aperture');
+    const modalShutter = document.getElementById('modal-shutter');
+    const modalIso = document.getElementById('modal-iso');
+    const modalDate = document.getElementById('modal-date');
+    const modalPrev = document.getElementById('modal-prev');
+    const modalNext = document.getElementById('modal-next');
+
+    const categoryLabel = { landscape: '风光', city: '城市', nature: '自然', portrait: '人文' };
+
+    let visibleCards = [];
+    let currentIndex = 0;
+
+    function getVisibleCards() {
+      return Array.from(photoCards).filter(c => !c.classList.contains('hidden'));
+    }
+
+    function openModal(card) {
+      visibleCards = getVisibleCards();
+      currentIndex = visibleCards.indexOf(card);
+      populateModal(card);
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      modalClose.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function populateModal(card) {
+      const thumb = card.querySelector('.photo-thumb');
+      const src = thumb.src.replace('w=600', 'w=1000');
+      modalImg.src = src;
+      modalImg.alt = card.dataset.title;
+      modalTitle.textContent = card.dataset.title;
+      modalCategory.textContent = categoryLabel[card.dataset.category] || card.dataset.category;
+      modalDesc.textContent = card.dataset.desc;
+      modalCamera.textContent = card.dataset.camera;
+      modalLens.textContent = card.dataset.lens;
+      modalAperture.textContent = card.dataset.aperture;
+      modalShutter.textContent = card.dataset.shutter;
+      modalIso.textContent = card.dataset.iso;
+      modalDate.textContent = card.dataset.date;
+
+      modalPrev.disabled = currentIndex <= 0;
+      modalNext.disabled = currentIndex >= visibleCards.length - 1;
+    }
+
+    photoCards.forEach(card => {
+      card.addEventListener('click', () => openModal(card));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(card); }
+      });
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+    modalPrev.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        populateModal(visibleCards[currentIndex]);
+      }
+    });
+
+    modalNext.addEventListener('click', () => {
+      if (currentIndex < visibleCards.length - 1) {
+        currentIndex++;
+        populateModal(visibleCards[currentIndex]);
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (!modal.classList.contains('open')) return;
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft' && !modalPrev.disabled) modalPrev.click();
+      if (e.key === 'ArrowRight' && !modalNext.disabled) modalNext.click();
+    });
+  </script>
+</body>
+</html>
